@@ -1,9 +1,10 @@
-package access_token
+package oauth
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestAccessTokenConstants(t *testing.T) {
