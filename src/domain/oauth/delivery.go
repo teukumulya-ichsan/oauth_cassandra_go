@@ -2,6 +2,7 @@ package oauth
 
 import (
 	"net/http"
+	"oauth_cassandra_golang/src/utils/errors"
 
 	"github.com/gin-gonic/gin"
 )
@@ -19,6 +20,21 @@ func (delivery *AccessTokenDelivery) GetByID(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, accessToken)
+}
+
+func (delivery *AccessTokenDelivery) Create(c *gin.Context) {
+	var accessToken AccessToken
+	if err := c.ShouldBindJSON(&accessToken); err != nil {
+		restErr := errors.NewBadRequestError("invalid json body")
+		c.JSON(restErr.Status, restErr)
+		return
+	}
+
+	if err := delivery.Service.Create(accessToken); err != nil {
+		c.JSON(err.Status, err)
+		return
+	}
+	c.JSON(http.StatusCreated, accessToken)
 }
 
 // NewAccessTokenDelivery constructor

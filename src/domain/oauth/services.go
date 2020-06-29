@@ -24,6 +24,22 @@ func (s *Service) GetByID(accessTokenID string) (*AccessToken, *errors.RestErr) 
 	return accessToken, nil
 }
 
+func (s *Service) Create(accessToken AccessToken) *errors.RestErr {
+	if err := accessToken.Validate(); err != nil {
+		return err
+	}
+
+	return s.Repository.Create(accessToken)
+}
+
+func (s *Service) UpdateExpirationTime(accessToken AccessToken) *errors.RestErr {
+	if err := accessToken.Validate(); err != nil {
+		return err
+	}
+
+	return s.Repository.UpdateExpirationTime(accessToken)
+}
+
 // NewService contructor func
 func NewService(repo IDbRepository) IService {
 	return &Service{Repository: repo}
