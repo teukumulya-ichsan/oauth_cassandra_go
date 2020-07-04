@@ -20,6 +20,7 @@ func init() {
 	}
 }
 
+// GetSession func of cassandra instance
 func GetSession() *gocql.Session {
 	return session
 }

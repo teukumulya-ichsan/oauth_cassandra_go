@@ -22,10 +22,11 @@ func (delivery *AccessTokenDelivery) GetByID(c *gin.Context) {
 	c.JSON(http.StatusOK, accessToken)
 }
 
+// Create controller
 func (delivery *AccessTokenDelivery) Create(c *gin.Context) {
 	var accessToken AccessToken
 	if err := c.ShouldBindJSON(&accessToken); err != nil {
-		restErr := errors.NewBadRequestError("invalid json body")
+		restErr := errors.NewBadRequestError(invalidJSONBody)
 		c.JSON(restErr.Status, restErr)
 		return
 	}

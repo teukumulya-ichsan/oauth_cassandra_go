@@ -18,20 +18,20 @@ type AccessToken struct {
 	Expires     int64  `json:"expires"`
 }
 
-//
-func (at *AccessToken) Validate() *errors.RestErr {
-	at.AccessToken = strings.TrimSpace(at.AccessToken)
-	if at.AccessToken == "" {
-		return errors.NewBadRequestError("invalid access token id")
+// Validate method to validate access Token
+func (accessToken *AccessToken) Validate() *errors.RestErr {
+	accessToken.AccessToken = strings.TrimSpace(accessToken.AccessToken)
+	if accessToken.AccessToken == "" {
+		return errors.NewBadRequestError(invalidAccessTokenID)
 	}
-	if at.UserID <= 0 {
-		return errors.NewBadRequestError("invalid user id")
+	if accessToken.UserID <= 0 {
+		return errors.NewBadRequestError(invalidUserID)
 	}
-	if at.ClientID <= 0 {
-		return errors.NewBadRequestError("invalid client id")
+	if accessToken.ClientID <= 0 {
+		return errors.NewBadRequestError(invalidClientID)
 	}
-	if at.Expires <= 0 {
-		return errors.NewBadRequestError("invalid expiration time")
+	if accessToken.Expires <= 0 {
+		return errors.NewBadRequestError(invalidExpireTime)
 	}
 	return nil
 }

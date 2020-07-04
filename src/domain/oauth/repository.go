@@ -10,7 +10,7 @@ type dbRepository struct {
 }
 
 func (r *dbRepository) GetByID(accessTokenID string) (*AccessToken, *errors.RestErr) {
-		var result AccessToken
+	var result AccessToken
 	if err := cassandra.GetSession().Query(queryGetAccessToken, accessTokenID).Scan(
 		&result.AccessToken,
 		&result.UserID,
@@ -18,7 +18,7 @@ func (r *dbRepository) GetByID(accessTokenID string) (*AccessToken, *errors.Rest
 		&result.Expires,
 	); err != nil {
 		if err == gocql.ErrNotFound {
-			return nil, errors.NewNotFoundError("no access token found with given id")
+			return nil, errors.NewNotFoundError(errNotFoundAccessToken)
 		}
 		return nil, errors.NewInternalServerError(err.Error())
 	}
@@ -27,7 +27,6 @@ func (r *dbRepository) GetByID(accessTokenID string) (*AccessToken, *errors.Rest
 }
 
 func (r *dbRepository) Create(accessToken AccessToken) *errors.RestErr {
-
 
 	if err := cassandra.GetSession().Query(queryCreateAccessToken,
 		accessToken.AccessToken,

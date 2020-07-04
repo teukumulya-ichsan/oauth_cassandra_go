@@ -11,12 +11,19 @@ type RestErr struct {
 	Error   string `json:"error"`
 }
 
+// error const
+const (
+	errBadRequest     string = "bad_request"
+	errNotFound       string = "not_found"
+	errInternalServer string = "internal_server_error"
+)
+
 // NewBadRequestError func to send bad request error
 func NewBadRequestError(message string) *RestErr {
 	return &RestErr{
 		Message: message,
 		Status:  http.StatusBadRequest,
-		Error:   "bad_request",
+		Error:   errBadRequest,
 	}
 }
 
@@ -25,7 +32,7 @@ func NewNotFoundError(message string) *RestErr {
 	return &RestErr{
 		Message: message,
 		Status:  http.StatusNotFound,
-		Error:   "bad_request",
+		Error:   errNotFound,
 	}
 }
 
@@ -34,6 +41,6 @@ func NewInternalServerError(message string) *RestErr {
 	return &RestErr{
 		Message: message,
 		Status:  http.StatusInternalServerError,
-		Error:   "internal_server_error",
+		Error:   errInternalServer,
 	}
 }
