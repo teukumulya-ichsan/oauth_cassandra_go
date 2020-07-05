@@ -7,13 +7,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// AccessTokenDelivery struct
-type AccessTokenDelivery struct {
-	Service IService
+// OAuthDelivery struct
+type OAuthDelivery struct {
+	Service IOAuthService
 }
 
 // GetByID controller
-func (delivery *AccessTokenDelivery) GetByID(c *gin.Context) {
+func (delivery *OAuthDelivery) GetByID(c *gin.Context) {
 	accessToken, err := delivery.Service.GetByID(c.Param("access_token_id"))
 	if err != nil {
 		c.JSON(err.Status, err)
@@ -23,7 +23,7 @@ func (delivery *AccessTokenDelivery) GetByID(c *gin.Context) {
 }
 
 // Create controller
-func (delivery *AccessTokenDelivery) Create(c *gin.Context) {
+func (delivery *OAuthDelivery) Create(c *gin.Context) {
 	var accessToken AccessToken
 	if err := c.ShouldBindJSON(&accessToken); err != nil {
 		restErr := errors.NewBadRequestError(invalidJSONBody)
@@ -38,9 +38,9 @@ func (delivery *AccessTokenDelivery) Create(c *gin.Context) {
 	c.JSON(http.StatusCreated, accessToken)
 }
 
-// NewAccessTokenDelivery constructor
-func NewAccessTokenDelivery(service IService) IAccessTokenDelivery {
-	return &AccessTokenDelivery{
+// NewOAuthDelivery constructor
+func NewOAuthDelivery(service IOAuthService) IOAuthDelivery {
+	return &OAuthDelivery{
 		Service: service,
 	}
 }

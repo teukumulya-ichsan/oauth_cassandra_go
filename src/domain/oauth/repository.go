@@ -6,10 +6,10 @@ import (
 	"oauth_cassandra_golang/src/utils/errors"
 )
 
-type dbRepository struct {
+type OAuthRepository struct {
 }
 
-func (r *dbRepository) GetByID(accessTokenID string) (*AccessToken, *errors.RestErr) {
+func (r *OAuthRepository) GetByID(accessTokenID string) (*AccessToken, *errors.RestErr) {
 	var result AccessToken
 	if err := cassandra.GetSession().Query(queryGetAccessToken, accessTokenID).Scan(
 		&result.AccessToken,
@@ -26,7 +26,7 @@ func (r *dbRepository) GetByID(accessTokenID string) (*AccessToken, *errors.Rest
 	return &result, nil
 }
 
-func (r *dbRepository) Create(accessToken AccessToken) *errors.RestErr {
+func (r *OAuthRepository) Create(accessToken AccessToken) *errors.RestErr {
 
 	if err := cassandra.GetSession().Query(queryCreateAccessToken,
 		accessToken.AccessToken,
@@ -40,7 +40,7 @@ func (r *dbRepository) Create(accessToken AccessToken) *errors.RestErr {
 	return nil
 }
 
-func (r *dbRepository) UpdateExpirationTime(accessToken AccessToken) *errors.RestErr {
+func (r *OAuthRepository) UpdateExpirationTime(accessToken AccessToken) *errors.RestErr {
 	if err := cassandra.GetSession().Query(queryUpdateExpires,
 		accessToken.Expires,
 		accessToken.AccessToken,
@@ -52,6 +52,6 @@ func (r *dbRepository) UpdateExpirationTime(accessToken AccessToken) *errors.Res
 }
 
 // NewDBRepository constructor func
-func NewDBRepository() IDbRepository {
-	return &dbRepository{}
+func NewOAuthRepository() IOAuthRepository {
+	return &OAuthRepository{}
 }

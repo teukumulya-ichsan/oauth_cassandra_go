@@ -5,13 +5,13 @@ import (
 	"strings"
 )
 
-// Service struct
-type Service struct {
-	Repository IDbRepository
+// OAuthService struct
+type OAuthService struct {
+	Repository IOAuthRepository
 }
 
 // GetByID service func to get token by ID
-func (s *Service) GetByID(accessTokenID string) (*AccessToken, *errors.RestErr) {
+func (s *OAuthService) GetByID(accessTokenID string) (*AccessToken, *errors.RestErr) {
 	accessTokenID = strings.TrimSpace(accessTokenID)
 	if len(accessTokenID) == 0 {
 		return nil, errors.NewBadRequestError(invalidAccessTokenID)
@@ -25,7 +25,7 @@ func (s *Service) GetByID(accessTokenID string) (*AccessToken, *errors.RestErr) 
 }
 
 // Create service func to Create access token
-func (s *Service) Create(accessToken AccessToken) *errors.RestErr {
+func (s *OAuthService) Create(accessToken AccessToken) *errors.RestErr {
 	if err := accessToken.Validate(); err != nil {
 		return err
 	}
@@ -34,7 +34,7 @@ func (s *Service) Create(accessToken AccessToken) *errors.RestErr {
 }
 
 // UpdateExpirationTime func to update expires access token
-func (s *Service) UpdateExpirationTime(accessToken AccessToken) *errors.RestErr {
+func (s *OAuthService) UpdateExpirationTime(accessToken AccessToken) *errors.RestErr {
 	if err := accessToken.Validate(); err != nil {
 		return err
 	}
@@ -42,7 +42,7 @@ func (s *Service) UpdateExpirationTime(accessToken AccessToken) *errors.RestErr 
 	return s.Repository.UpdateExpirationTime(accessToken)
 }
 
-// NewService constructor func
-func NewService(repo IDbRepository) IService {
-	return &Service{Repository: repo}
+// NewOAuthService constructor func
+func NewOAuthService(repo IOAuthRepository) IOAuthService {
+	return &OAuthService{Repository: repo}
 }
